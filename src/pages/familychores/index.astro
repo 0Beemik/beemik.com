@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import SupportLegal from '../../components/SupportLegal.astro';
+import { bySlug } from '../../data/projects';
+
+const p = bySlug('familychores');
+const features = [
+  { img: 'board', title: 'One board for everyone', text: "Each kid sees what's left today: morning, afternoon and evening. Every finished chore pays out points and coins." },
+  { img: 'new', title: 'Parents set the rules', text: 'Any chore, any time of day. Give it to one kid, several people, or rotate it weekly.' },
+  { img: 'leader', title: 'Win the week', text: "Streaks, badges and a weekly leaderboard. Points can't be bought, only earned." },
+];
+---
+<Base title="Family Chores · Beemik" description={p.blurb} accent={p.accent}>
+  <section class="hero wrap">
+    <div class="copy">
+      <div class="app-id reveal">
+        <img src={p.icon} alt="" width="64" height="64" />
+        <span class="chip status-soon"><span class="dot"></span>{p.statusLabel}</span>
+      </div>
+      <h1 class="reveal">Do chores.<br />Earn coins.<br /><span>Win the week.</span></h1>
+      <p class="lede reveal">
+        A chore board the whole family actually wants to open. Kids tick off chores, earn points and coins, and trade the
+        ones they hate in a family marketplace.
+      </p>
+      <div class="pills reveal">
+        <span class="chip">📶 Syncs over home Wi-Fi</span>
+        <span class="chip">🙅 No accounts</span>
+        <span class="chip">🏠 Data stays home</span>
+      </div>
+    </div>
+    <div class="shot reveal">
+      <img src="/img/familychores/phones.webp" alt="Family Chores on three phones" width="1400" height="925" />
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Chores, but make it a game</h2>
+    </div>
+    <div class="features">
+      {features.map((f) => (
+        <div class="card feature reveal">
+          <img src={`/img/familychores/${f.img}.webp`} alt="" loading="lazy" />
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap market reveal">
+    <div class="market-card">
+      <span class="eyebrow">The family marketplace</span>
+      <h2>Hate dishes? Sell them.</h2>
+      <p>
+        Kids can put a chore up for sale, buy offers from siblings, or push a chore onto someone else, if they're willing to
+        pay for it. Parents see everything and set the prices.
+      </p>
+    </div>
+  </section>
+
+  <SupportLegal
+    links={[
+      { label: 'Privacy policy', href: '/familychores/privacy/', note: 'What the app stores and why' },
+      { label: 'Support & FAQ', href: '/familychores/support/', note: 'Setup, syncing and common questions' },
+    ]}
+  />
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: center; padding: 70px 0 40px; }
+  .app-id { display: flex; align-items: center; gap: 14px; }
+  .app-id img { width: 64px; height: 64px; border-radius: 18px; box-shadow: var(--shadow); }
+  h1 { font-size: clamp(44px, 6.4vw, 78px); font-weight: 800; margin: 22px 0 20px; }
+  h1 span { color: var(--muted); }
+  .lede { font-size: 19px; color: var(--muted); margin: 0 0 24px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .shot img { border-radius: 28px; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .feature { padding: 22px; box-shadow: none; background: var(--panel); }
+  .feature img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; border-radius: 18px; margin-bottom: 20px; }
+  .feature h3 { font-size: 22px; margin-bottom: 6px; }
+  .feature p { color: var(--muted); margin: 0; font-size: 16px; }
+  .market-card { padding: clamp(28px, 6vw, 64px); text-align: center; background: var(--panel); border-radius: var(--radius); margin-bottom: 120px; }
+  .market-card h2 { font-size: clamp(32px, 5vw, 52px); margin: 10px 0 14px; }
+  .market-card p { color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 18px; }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 50px; }
+    .features { grid-template-columns: 1fr; }
+  }
+</style>

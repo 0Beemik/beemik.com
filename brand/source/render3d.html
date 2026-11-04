@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:transparent;overflow:hidden}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const q = new URLSearchParams(location.search);
+const body = q.get('body') || '#1d1d1f';
+const letter = q.get('letter') || '#ffffff';
+const size = innerWidth;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setSize(size, size);
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const svg = await (await fetch('paths.svg')).text();
+const data = new SVGLoader().parse(svg);
+const group = new THREE.Group();
+
+const bodyMat = new THREE.MeshPhysicalMaterial({ color: body, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.15 });
+const letterMat = new THREE.MeshPhysicalMaterial({ color: letter, roughness: 0.25, metalness: 0.0, clearcoat: 0.6 });
+
+data.paths.forEach((path, i) => {
+  const isLetter = path.userData.node.id === 'b';
+  for (const shape of SVGLoader.createShapes(path)) {
+    const geo = new THREE.ExtrudeGeometry(shape, isLetter
+      ? { depth: 4, bevelEnabled: true, bevelThickness: 1.2, bevelSize: 0.7, bevelSegments: 6, curveSegments: 24 }
+      : { depth: 14, bevelEnabled: true, bevelThickness: 3, bevelSize: 2.6, bevelSegments: 10 });
+    const mesh = new THREE.Mesh(geo, isLetter ? letterMat : bodyMat);
+    mesh.position.z = isLetter ? 13.5 : 0;
+    mesh.castShadow = mesh.receiveShadow = true;
+    group.add(mesh);
+  }
+});
+// SVG is y-down; flip and center on the origin
+group.scale.set(1, -1, 1);
+group.position.set(-50, 50, 0);
+const pivot = new THREE.Group();
+pivot.add(group);
+pivot.rotation.set(-0.22, 0.3, 0.02);
+scene.add(pivot);
+
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(-80, 120, 160);
+key.castShadow = true;
+scene.add(key);
+scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+
+const camera = new THREE.PerspectiveCamera(30, 1, 1, 2000);
+camera.position.set(0, 0, 290);
+renderer.render(scene, camera);
+document.title = 'done';
+</script>
+</body>
+</html>

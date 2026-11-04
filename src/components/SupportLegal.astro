@@ -1,0 +1,41 @@
+---
+/** The "Support & Legal" block at the bottom of every project page. */
+interface Props {
+  links: { label: string; href: string; note?: string }[];
+}
+const { links } = Astro.props;
+---
+<section class="section band" id="support"><div class="wrap">
+  <div class="card legal reveal">
+    <div>
+      <span class="eyebrow">Support & legal</span>
+      <h2>Need a hand?</h2>
+      <p>Questions, bugs or ideas: email <a href="mailto:support@beemik.com">support@beemik.com</a> and a real person will reply.</p>
+    </div>
+    <ul>
+      {links.map((l) => (
+        <li>
+          <a href={l.href}>
+            <span><b>{l.label}</b>{l.note && <small>{l.note}</small>}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div></section>
+
+<style>
+  .legal { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: clamp(26px, 5vw, 50px); }
+  h2 { font-size: clamp(30px, 4vw, 42px); margin: 10px 0 12px; }
+  p { color: var(--muted); margin: 0; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; align-content: start; }
+  li a {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 14px 18px; border-radius: 16px; background: var(--panel);
+    border: 1px solid transparent; text-decoration: none; color: var(--ink); transition: transform .2s, border-color .2s;
+  }
+  li a:hover { transform: translateX(4px); border-color: var(--line); background: #fff; }
+  small { display: block; color: var(--muted); font-size: 13px; }
+  @media (max-width: 760px) { .legal { grid-template-columns: 1fr; } }
+</style>

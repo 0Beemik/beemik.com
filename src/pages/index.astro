@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectTile from '../components/ProjectTile.astro';
+import { projects } from '../data/projects';
+
+const live = projects.filter((p) => p.status === 'live').length;
+---
+<Base
+  title="Beemik · Friendly apps & games"
+  description="Beemik is a small independent studio making friendly apps and games for families, careers and everyday life."
+>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">Independent studio</p>
+      <h1 class="reveal">Small studio.<br /><span>Big-hearted apps.</span></h1>
+      <p class="lede reveal">
+        Beemik makes friendly apps and games for families, careers and everyday life. Built with care, fair to the people who use them.
+      </p>
+      <div class="cta reveal">
+        <a class="btn" href="#projects">See the projects</a>
+        <a class="btn ghost" href="mailto:support@beemik.com">Say hello ›</a>
+      </div>
+    </div>
+
+    <div class="collage reveal" aria-hidden="true">
+      <div class="panel"></div>
+      <div class="item f1 card"><img src="/img/familychores/board.webp" alt="" width="420" height="900" /></div>
+      <div class="item f2 card">
+        <img src="/img/careerdna/dashboard.webp" alt="" width="1152" height="544" />
+      </div>
+      <div class="item f3 card">
+        <span class="big">👴</span>
+        <div><b>Grumps!</b><small>In development</small></div>
+      </div>
+      <div class="item f4 card">
+        <img src="/img/familychores/icon.png" alt="" width="40" height="40" />
+        <div><b>Family Chores</b><small>Coming soon to Google Play</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap stats reveal">
+    <div><b>{projects.length}</b><span>projects</span></div>
+    <div><b>{live}</b><span>live today</span></div>
+    <div><b>3</b><span>platforms: web, Android, iOS</span></div>
+  </section>
+
+  <section id="projects" class="section band">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">The projects</p>
+        <h2>Made by Beemik.</h2>
+        <p>Pick one to see what it does, how it works, and its support and privacy details.</p>
+      </div>
+      <div class="tiles">
+        {projects.map((p) => <ProjectTile project={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">How we build</p>
+      <h2>A few simple rules.</h2>
+    </div>
+    <div class="rules">
+      <div class="rule reveal">
+        <h3>Friendly first.</h3>
+        <p>Apps should feel welcoming, whether you're seven or seventy.</p>
+      </div>
+      <div class="rule reveal">
+        <h3>Your data stays yours.</h3>
+        <p>We collect only what an app needs to work, and say so plainly.</p>
+      </div>
+      <div class="rule reveal">
+        <h3>Fair to play.</h3>
+        <p>No pay-to-win, no tricks. Ads in kids' apps are kid-safe and never personalized.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+    min-height: min(calc(100svh - 56px), 820px); padding: 56px 0;
+  }
+  .hero h1 { font-size: clamp(48px, 7vw, 88px); font-weight: 800; margin: 12px 0 24px; }
+  .hero h1 span { color: var(--muted); }
+  .lede { font-size: 21px; color: var(--muted); max-width: 500px; margin: 0 0 32px; }
+  .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+  .hero-copy .reveal:nth-child(2) { transition-delay: .08s; }
+  .hero-copy .reveal:nth-child(3) { transition-delay: .16s; }
+  .hero-copy .reveal:nth-child(4) { transition-delay: .24s; }
+
+  .collage { position: relative; height: min(600px, 70vh); transition-delay: .2s; }
+  .panel { position: absolute; inset: 6% 0 0 10%; background: var(--panel); border-radius: 36px; }
+  .item { position: absolute; }
+  .f1 { width: 38%; left: 4%; top: 0; padding: 8px; border-radius: 30px; z-index: 2; }
+  .f1 img { border-radius: 24px; }
+  .f2 { width: 70%; right: -2%; bottom: 12%; padding: 0; overflow: hidden; border-radius: 18px; z-index: 3; }
+  .f3, .f4 { display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 18px; z-index: 4; }
+  .f3 { right: 6%; top: 14%; }
+  .f4 { left: 0; bottom: 2%; }
+  .f3 .big { font-size: 34px; width: 44px; height: 44px; display: grid; place-items: center; background: var(--panel); border-radius: 11px; }
+  .f4 img { width: 44px; height: 44px; border-radius: 11px; }
+  .f3 b, .f4 b { font-size: 15px; display: block; }
+  .f3 small, .f4 small { color: var(--muted); font-size: 13px; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line); padding: 40px 0 90px;
+  }
+  .stats div { display: flex; align-items: baseline; gap: 12px; }
+  .stats b { font-family: var(--display); font-size: 56px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+  .stats span { color: var(--muted); }
+
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+  .rule { border-top: 2px solid var(--ink); padding-top: 22px; }
+  .rule h3 { font-size: 26px; margin-bottom: 10px; }
+  .rule p { color: var(--muted); margin: 0; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 48px; }
+    .collage { height: 480px; max-width: 540px; width: 100%; margin: 0 auto; }
+    .tiles, .rules { grid-template-columns: 1fr; }
+    .rules { gap: 36px; }
+  }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr; gap: 20px; padding-bottom: 60px; }
+    .collage { height: 400px; }
+    .f4 { display: none; }
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import SupportLegal from '../../components/SupportLegal.astro';
+import { bySlug } from '../../data/projects';
+
+const p = bySlug('careerdna');
+const features = [
+  { icon: '🧭', title: 'Dual-path analysis', text: 'Two plans at once: how to grow in the role you have, and how to get to the one you want next.' },
+  { icon: '🎯', title: 'Job matching', text: 'See which roles fit your skills and experience, and what would close the gap.' },
+  { icon: '📈', title: 'Predictive insights', text: 'Career guidance grounded in real market data, not guesswork.' },
+];
+---
+<Base title="CareerDNA · Beemik" description={p.blurb} accent={p.accent}>
+  <section class="hero wrap">
+    <div class="copy">
+      <span class="chip status-live reveal"><span class="dot"></span>Live at careerdna.co</span>
+      <h1 class="reveal">Show them what<br /><span>you're made of.</span></h1>
+      <p class="lede reveal">
+        CareerDNA is career intelligence for people who'd rather build than guess. A short weekly check-in, live job
+        matches, and a clear read on where you're heading.
+      </p>
+      <div class="reveal">
+        <a class="btn" href="https://careerdna.co" target="_blank" rel="noopener">Visit careerdna.co ↗</a>
+      </div>
+    </div>
+    <div class="shot reveal">
+      <img src="/img/careerdna/dashboard.webp" alt="The CareerDNA dashboard: career health score, weekly check-in, goal progress and job matches" width="1152" height="544" />
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="features">
+      {features.map((f) => (
+        <div class="feature reveal">
+          <span class="icon">{f.icon}</span>
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap shift">
+    <div class="section-head reveal">
+      <p class="eyebrow">The shift</p>
+      <h2>From "someday" to on purpose.</h2>
+    </div>
+    <img class="reveal" src="/img/careerdna/shift.webp" alt="Before: endless alerts and half-edited resumes. After: a short check-in, live postings and a clear story." width="1160" height="384" loading="lazy" />
+  </section>
+
+  <SupportLegal
+    links={[
+      { label: 'Privacy policy', href: 'https://careerdna.co/privacy', note: 'On careerdna.co' },
+      { label: 'Terms of service', href: 'https://careerdna.co/terms', note: 'On careerdna.co' },
+    ]}
+  />
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; padding: 80px 0 20px; }
+  h1 { font-size: clamp(42px, 5.2vw, 68px); font-weight: 800; margin: 22px 0 20px; }
+  h1 span { color: var(--muted); }
+  .lede { font-size: 19px; color: var(--muted); margin: 0 0 28px; }
+  .shot img { border-radius: 16px; box-shadow: var(--shadow-lift); }
+  .shift { padding-top: 0; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .feature { border-top: 2px solid var(--ink); padding-top: 22px; }
+  .icon { font-size: 34px; }
+  .feature h3 { font-size: 23px; margin: 14px 0 8px; }
+  .feature p { color: var(--muted); margin: 0; }
+  @media (max-width: 900px) {
+    .hero, .features { grid-template-columns: 1fr; }
+  }
+</style>

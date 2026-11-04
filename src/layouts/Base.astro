@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Project accent color; tints links and eyebrows on project pages. */
+  accent?: string;
+}
+const { title, description, accent } = Astro.props;
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body style={accent ? `--accent: ${accent}` : undefined}>
+    <header class="site-header">
+      <div class="bar wrap">
+        <a class="brand" href="/"><Logo /><b>beemik</b></a>
+        <nav>
+          <a href="/#projects">Projects</a>
+          <a class="hide-sm" href="/#about">About</a>
+          <a href="mailto:support@beemik.com">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main><slot /></main>
+
+    <footer class="site-footer">
+      <div class="row wrap">
+        <a class="brand" href="/"><Logo size={22} /><b style="font-size:16px">beemik</b></a>
+        <span>Made with care · © {year} Beemik</span>
+        <a href="mailto:support@beemik.com">support@beemik.com</a>
+      </div>
+    </footer>
+
+    <script>
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))),
+        { threshold: 0.12 },
+      );
+      els.forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

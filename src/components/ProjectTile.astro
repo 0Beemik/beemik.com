@@ -1,0 +1,59 @@
+---
+import type { Project } from '../data/projects';
+
+const { project: p } = Astro.props as { project: Project };
+const Tag = p.href ? 'a' : 'div';
+---
+<Tag
+  class:list={['tile', 'card', 'reveal', { disabled: !p.href }]}
+  href={p.href}
+  {...(p.external ? { target: '_blank', rel: 'noopener' } : {})}
+>
+  <div class="tile-text">
+    <div class="tile-top">
+      <div class="tile-icon">
+        {p.icon ? <img src={p.icon} alt="" width="48" height="48" /> : <span>{p.emoji}</span>}
+      </div>
+      <span class={`chip status-${p.status}`}><span class="dot"></span>{p.statusLabel}</span>
+    </div>
+    <h3>{p.name}</h3>
+    <p class="tagline">{p.tagline}</p>
+    <p class="blurb">{p.blurb}</p>
+    {p.href && <span class="more">Learn more <span aria-hidden="true">›</span></span>}
+  </div>
+  <div class:list={['visual', `v-${p.slug}`]}>
+    {p.image ? <img src={p.image} alt="" loading="lazy" /> : <span class="big">{p.emoji}</span>}
+  </div>
+</Tag>
+
+<style>
+  .tile {
+    display: flex; flex-direction: column; overflow: hidden;
+    text-decoration: none; color: var(--ink); transition: box-shadow .4s;
+  }
+  a.tile:hover { box-shadow: var(--shadow-lift); }
+  .tile-text { padding: 30px 32px 24px; }
+  .tile-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .tile-icon {
+    width: 52px; height: 52px; border-radius: 13px; display: grid; place-items: center; font-size: 28px;
+    background: var(--panel); overflow: hidden;
+  }
+  .tile-icon img { width: 100%; height: 100%; }
+  h3 { font-size: 32px; }
+  .tagline { font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: -0.02em; margin: 6px 0 10px; }
+  .blurb { color: var(--muted); margin: 0 0 14px; font-size: 16px; }
+  .more { color: var(--link); font-size: 16px; }
+  a.tile:hover .more { text-decoration: underline; }
+
+  .visual {
+    margin-top: auto; height: 260px; background: var(--panel); display: grid; place-items: end center;
+    overflow: hidden; position: relative;
+  }
+  .visual img { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+  a.tile:hover .visual img { transform: scale(1.03); }
+  .v-familychores img { width: 46%; margin-bottom: -36%; border-radius: 22px; box-shadow: var(--shadow-lift); }
+  .v-careerdna { place-items: center; }
+  .v-careerdna img { width: 82%; border-radius: 14px; box-shadow: var(--shadow-lift); }
+  .big { font-size: 110px; line-height: 1; align-self: center; }
+  .disabled { cursor: default; }
+</style>

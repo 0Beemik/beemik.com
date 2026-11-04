@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import { bySlug } from '../../data/projects';
+
+const p = bySlug('grumps');
+const levels = ['🌧️ Rain', '🐈 Cats', '🐕 Dogs', '📦 Boxes', '🗑️ Garbage cans'];
+---
+<Base title="Grumps! · Beemik" description={p.blurb} accent={p.accent}>
+  <section class="hero narrow">
+    <span class="chip status-building reveal"><span class="dot"></span>{p.statusLabel}</span>
+    <div class="sky reveal" aria-hidden="true">
+      <span class="drop d1">🌧️</span><span class="drop d2">🐈</span><span class="drop d3">🐕</span><span class="drop d4">📦</span>
+      <span class="grumps">👴</span>
+    </div>
+    <h1 class="reveal">Grumps!</h1>
+    <p class="lede reveal">
+      A grumpy old man just wants to get to the corner store. The weather has other plans. Dodge the rain, then the cats
+      and dogs, then things get weird.
+    </p>
+    <div class="levels reveal">{levels.map((l) => <span class="chip">{l}</span>)}</div>
+  </section>
+
+  <section class="section narrow">
+    <div class="card reveal">
+      <h2>Simple to learn. Brutal to master.</h2>
+      <ul>
+        <li>Tap left or right to dodge. That's it.</li>
+        <li>Earn coins for umbrellas, coats and boots that help along the way.</li>
+        <li>Prestige loops keep it hard, even after you've unlocked everything.</li>
+        <li>No pay-to-win. Every advantage is earned.</li>
+      </ul>
+      <p class="note">Coming to iOS and Android. Privacy policy and support pages will be published here before launch.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { text-align: center; padding: 70px 0 10px; }
+  .sky { position: relative; height: 220px; margin: 20px auto 0; max-width: 420px; }
+  .drop { position: absolute; top: 0; font-size: 34px; animation: fall 3.6s linear infinite; opacity: 0; }
+  .d1 { left: 10%; } .d2 { left: 35%; animation-delay: -.9s; } .d3 { left: 62%; animation-delay: -1.8s; } .d4 { left: 85%; animation-delay: -2.7s; }
+  @keyframes fall {
+    0% { transform: translateY(-10px) rotate(0); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateY(150px) rotate(40deg); opacity: 0; }
+  }
+  .grumps { position: absolute; bottom: 0; left: 50%; font-size: 72px; line-height: 1; animation: shuffle 4s ease-in-out infinite; }
+  @keyframes shuffle { 0%, 100% { transform: translateX(-80%); } 50% { transform: translateX(-20%); } }
+  h1 { font-size: clamp(56px, 10vw, 110px); font-weight: 800; }
+  .lede { font-size: 19px; color: var(--muted); margin: 14px auto 24px; max-width: 580px; }
+  .levels { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .card { padding: clamp(26px, 5vw, 48px); background: var(--panel); box-shadow: none; }
+  .card h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 14px; }
+  .card li { margin: 8px 0; }
+  .note { color: var(--muted); font-size: 15px; margin: 22px 0 0; }
+</style>
