@@ -1,9 +1,13 @@
 // Cloudflare deploys this site as static files: `npm run build` writes them to dist/.
+// worker/index.js runs first to redirect http:// and www. to https://beemik.com.
 {
   "name": "beemik-com",
   "compatibility_date": "2026-11-01",
+  "main": "worker/index.js",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
   }
 }
