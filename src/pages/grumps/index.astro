@@ -3,55 +3,183 @@ import Base from '../../layouts/Base.astro';
 import { bySlug } from '../../data/projects';
 
 const p = bySlug('grumps');
-const levels = ['🌧️ Rain', '🐈 Cats', '🐕 Dogs', '📦 Boxes', '🗑️ Garbage cans'];
+const img = (n: string) => `/img/grumps/${n}.webp`;
+
+// the gallery: real gameplay frames, captured straight from the game
+const gallery = [
+  { img: 'house', title: '“Hmph.”', where: 'Out the front door', wide: true },
+  { img: 'cats-dogs', title: 'Raining cats and dogs', where: 'Level 2' },
+  { img: 'boxes', title: 'Boxes and garbage cans', where: 'Level 3' },
+  { img: 'pianos', title: 'Pianos and anvils', where: 'Level 4' },
+  { img: 'shops', title: 'Into the shopping strip', where: 'Nearly there' },
+  { img: 'market', title: 'He made it. He is not pleased.', where: 'The market', wide: true },
+];
+
+const levels = [
+  { n: 'Level 1', what: 'Rain', icon: '🌧️', note: 'A grey drizzle' },
+  { n: 'Level 2', what: 'Cats & dogs', icon: '🐈', note: 'A warm afternoon' },
+  { n: 'Level 3', what: 'Boxes & cans', icon: '📦', note: 'An overcast day' },
+  { n: 'Level 4', what: 'Pianos & anvils', icon: '🎹', note: 'Purple dusk' },
+];
+
+const shop = [
+  { what: 'Umbrellas', icon: '☂️', note: 'Cloth, plastic or metal. Blocks what falls on his head.' },
+  { what: 'Coats', icon: '🧥', note: 'Light, heavy or winter. Soaks up a hit or two.' },
+  { what: 'Boots & shoes', icon: '🥾', note: 'Walking boots or running shoes. A little faster.' },
+  { what: 'Extra heart', icon: '❤️', note: 'For when the weather wins.' },
+];
 ---
 <Base title="Grumps! · Beemik" description={p.blurb} accent={p.accent}>
-  <section class="hero narrow">
-    <span class="chip status-building reveal"><span class="dot"></span>{p.statusLabel}</span>
-    <div class="sky reveal" aria-hidden="true">
-      <span class="drop d1">🌧️</span><span class="drop d2">🐈</span><span class="drop d3">🐕</span><span class="drop d4">📦</span>
-      <span class="grumps">👴</span>
+  <section class="hero wrap">
+    <div class="copy">
+      <div class="app-id reveal">
+        <img src={p.icon} alt="" width="64" height="64" />
+        <span class="chip status-soon"><span class="dot"></span>{p.statusLabel}</span>
+      </div>
+      <h1 class="reveal">Rain. Cats.<br />Dogs.<br /><span>Pianos?!</span></h1>
+      <p class="lede reveal">
+        Grumps just wants to get to the market. Every single day the weather has other ideas. Walk him down the
+        sidewalk, watch the shadows, and dodge whatever the sky throws at him next.
+      </p>
+      <div class="pills reveal">
+        <span class="chip">👴 One very grumpy hero</span>
+        <span class="chip">🌧️ 4 levels, 16 rounds</span>
+        <span class="chip">🪙 Nickels and a shop</span>
+        <span class="chip">🕹️ 16-bit pixel art</span>
+      </div>
     </div>
-    <h1 class="reveal">Grumps!</h1>
-    <p class="lede reveal">
-      A grumpy old man just wants to get to the corner store. The weather has other plans. Dodge the rain, then the cats
-      and dogs, then things get weird.
-    </p>
-    <div class="levels reveal">{levels.map((l) => <span class="chip">{l}</span>)}</div>
+    <div class="player reveal">
+      <div class="screen">
+        <video src="/img/grumps/gameplay.mp4" poster={img('gameplay-poster')} autoplay muted loop playsinline preload="metadata"
+          aria-label="Grumps! gameplay: leaving the house, cats and dogs, boxes, pianos, and the walk into the market"></video>
+      </div>
+      <p class="credit">Real gameplay from an early build. Sound is on its way.</p>
+    </div>
   </section>
 
-  <section class="section narrow">
-    <div class="card reveal">
-      <h2>Simple to learn. Brutal to master.</h2>
-      <ul>
-        <li>Tap left or right to dodge. That's it.</li>
-        <li>Earn coins for umbrellas, coats and boots that help along the way.</li>
-        <li>Prestige loops keep it hard, even after you've unlocked everything.</li>
-        <li>No pay-to-win. Every advantage is earned.</li>
-      </ul>
-      <p class="note">Coming to iOS and Android. Privacy policy and support pages will be published here before launch.</p>
+  <section class="section band" id="walk">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The walk to the market</span>
+        <h2>It's only a few blocks.</h2>
+        <p>Out his front door, past the neighbours' houses, into the shops, and up to the market door. What could go wrong?</p>
+      </div>
+      <div class="gallery">
+        {gallery.map((g) => (
+          <figure class:list={['shot', 'reveal', { wide: g.wide }]}>
+            <img src={img(g.img)} alt={`${g.title}: ${g.where}`} loading="lazy" width="1536" height="864" />
+            <figcaption><b>{g.title}</b><span>{g.where}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="split">
+      <figure class="shot big reveal">
+        <img src={img('nickel')} alt="Grumps kneeling on the sidewalk to pick up a nickel: “Oh, a shiny nickel!”" loading="lazy" width="1536" height="864" />
+      </figure>
+      <div class="split-copy reveal">
+        <span class="eyebrow">How to play</span>
+        <h2>Watch the shadows.</h2>
+        <p>Walk Grumps anywhere on the sidewalk with the arrow keys, or drag a finger anywhere on the screen. A shadow grows wherever something is about to land, so <b>don't be standing in it</b>.</p>
+        <p>Spot a nickel? He'll stop and bend down for it, which is usually when a piano drops in. Nickels buy umbrellas, coats and boots.</p>
+        <p class="small">Three hearts for the whole trip. Run out and it's back to the first round, but you keep your nickels and your gear.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">4 levels × 4 rounds</span>
+        <h2>The forecast gets worse.</h2>
+        <p>Each level brings something new out of the sky. Finish all 16 rounds and the walk starts over, faster, with everything mixed together.</p>
+      </div>
+      <ol class="ladder reveal">
+        {levels.map((l) => <li><span class="ic">{l.icon}</span><b>{l.what}</b><small>{l.n}</small><em>{l.note}</em></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The shop</span>
+      <h2>Dress for the weather.</h2>
+      <p>Spend your nickels between rounds. Every item shows on Grumps: a yellow raincoat, red boots, a blue umbrella overhead.</p>
+    </div>
+    <ol class="ladder reveal">
+      {shop.map((s) => <li><span class="ic">{s.icon}</span><b>{s.what}</b><em>{s.note}</em></li>)}
+    </ol>
+  </section>
+
+  <section class="wrap fair reveal">
+    <div class="fair-card">
+      <span class="eyebrow">Fair to play</span>
+      <h2>Free. No pay-to-win.</h2>
+      <p>
+        There's nothing to buy with real money. Everything in the shop is bought with nickels you pick up on the walk.
+        The game is free and supported by ads.
+      </p>
+      <p class="note">
+        Privacy policy and support pages will be published here before launch.
+        Questions or ideas? Email <a href="mailto:support@beemik.com">support@beemik.com</a>.
+      </p>
+      <p class="note small">Art made from <a href="https://polyfork.dev" rel="noopener">Polyfork</a> 3D models (CC BY 4.0), rendered to pixel art.</p>
     </div>
   </section>
 </Base>
 
 <style>
-  .hero { text-align: center; padding: 70px 0 10px; }
-  .sky { position: relative; height: 220px; margin: 20px auto 0; max-width: 420px; }
-  .drop { position: absolute; top: 0; font-size: 34px; animation: fall 3.6s linear infinite; opacity: 0; }
-  .d1 { left: 10%; } .d2 { left: 35%; animation-delay: -.9s; } .d3 { left: 62%; animation-delay: -1.8s; } .d4 { left: 85%; animation-delay: -2.7s; }
-  @keyframes fall {
-    0% { transform: translateY(-10px) rotate(0); opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { transform: translateY(150px) rotate(40deg); opacity: 0; }
+  .hero { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 44px; align-items: center; padding: 70px 0 60px; }
+  .app-id { display: flex; align-items: center; gap: 14px; }
+  .app-id img { width: 64px; height: 64px; border-radius: 18px; box-shadow: var(--shadow); image-rendering: pixelated; }
+  h1 { font-size: clamp(44px, 6.4vw, 78px); font-weight: 800; margin: 22px 0 20px; }
+  h1 span { color: var(--accent); }
+  .lede { font-size: 19px; color: var(--muted); margin: 0 0 24px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* the gameplay video, in a phone held sideways */
+  .screen { position: relative; padding: 12px; background: #1d1d1f; border-radius: 34px; box-shadow: var(--shadow-lift); }
+  .screen video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 24px; background: #231a2e; image-rendering: pixelated; }
+  .credit { color: var(--muted); font-size: 13px; margin: 12px 4px 0; }
+
+  .shot { margin: 0; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+  .shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; image-rendering: pixelated; }
+  .shot figcaption { display: flex; justify-content: space-between; gap: 10px; padding: 12px 16px; font-size: 15px; }
+  .shot figcaption span { color: var(--muted); }
+
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .gallery .wide { grid-column: 1 / -1; }
+
+  .split { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+  .split-copy h2 { font-size: clamp(34px, 4.6vw, 50px); margin: 8px 0 16px; }
+  .split-copy p { color: #424245; font-size: 18px; margin: 0 0 14px; }
+  .split-copy .small { color: var(--muted); font-size: 15px; }
+
+  .ladder { list-style: none; padding: 0; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 980px; }
+  .ladder li { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 14px; border-radius: 20px; background: #fff; box-shadow: var(--shadow); }
+  .section:not(.band) .ladder li { background: var(--panel); box-shadow: none; }
+  .ladder .ic { font-size: 30px; line-height: 1; margin-bottom: 8px; }
+  .ladder b { font-family: var(--display); font-size: 17px; }
+  .ladder small { color: var(--accent); font-weight: 600; }
+  .ladder em { font-style: normal; color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  .fair-card { padding: clamp(28px, 6vw, 64px); text-align: center; background: var(--panel); border-radius: var(--radius); margin-bottom: 120px; }
+  .fair-card h2 { font-size: clamp(32px, 5vw, 52px); margin: 10px 0 14px; }
+  .fair-card p { color: var(--muted); max-width: 620px; margin: 0 auto; font-size: 18px; }
+  .fair-card .note { font-size: 15px; margin-top: 18px; }
+  .fair-card .small { font-size: 13px; margin-top: 10px; }
+
+  @media (max-width: 900px) {
+    .hero, .split { grid-template-columns: 1fr; }
+    .hero { padding-top: 50px; }
+    .ladder { grid-template-columns: repeat(2, 1fr); }
   }
-  .grumps { position: absolute; bottom: 0; left: 50%; font-size: 72px; line-height: 1; animation: shuffle 4s ease-in-out infinite; }
-  @keyframes shuffle { 0%, 100% { transform: translateX(-80%); } 50% { transform: translateX(-20%); } }
-  h1 { font-size: clamp(56px, 10vw, 110px); font-weight: 800; }
-  .lede { font-size: 19px; color: var(--muted); margin: 14px auto 24px; max-width: 580px; }
-  .levels { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-  .card { padding: clamp(26px, 5vw, 48px); background: var(--panel); box-shadow: none; }
-  .card h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 14px; }
-  .card li { margin: 8px 0; }
-  .note { color: var(--muted); font-size: 15px; margin: 22px 0 0; }
+  @media (max-width: 640px) {
+    .gallery { grid-template-columns: 1fr; }
+    .screen { padding: 8px; border-radius: 24px; }
+    .screen video { border-radius: 18px; }
+  }
 </style>
